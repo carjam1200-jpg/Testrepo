@@ -1,0 +1,21 @@
+#!/bin/sh
+
+# Minimal Gradle wrapper bootstrap for CI.
+# Downloads the configured Gradle distribution on first run.
+
+set -e
+APP_HOME=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+DIST_VERSION="8.9"
+DIST_URL="https://services.gradle.org/distributions/gradle-${DIST_VERSION}-bin.zip"
+GRADLE_HOME="$APP_HOME/.gradle-wrapper/gradle-${DIST_VERSION}"
+
+if [ ! -x "$GRADLE_HOME/bin/gradle" ]; then
+  mkdir -p "$APP_HOME/.gradle-wrapper"
+  TMP="$APP_HOME/.gradle-wrapper/gradle.zip"
+  echo "Downloading Gradle ${DIST_VERSION}..."
+  curl -fsSL "$DIST_URL" -o "$TMP"
+  unzip -q -o "$TMP" -d "$APP_HOME/.gradle-wrapper"
+  rm -f "$TMP"
+fi
+
+exec "$GRADLE_HOME/bin/gradle" "$@"
