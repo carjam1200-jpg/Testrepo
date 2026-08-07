@@ -1,0 +1,19 @@
+plugins { id 'com.android.application' }
+
+android {
+    namespace 'com.carjam.aerotheme'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId 'com.carjam.aerotheme'
+        minSdk 23
+        targetSdk 35
+        versionCode 1
+        versionName '0.1.0'
+    }
+}
+
+dependencies {
+    implementation 'dev.rikka.shizuku:api:13.6.0'
+    implementation 'dev.rikka.shizuku:provider:13.6.0'
+}
