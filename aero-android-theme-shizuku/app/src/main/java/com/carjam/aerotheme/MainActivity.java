@@ -1,6 +1,7 @@
 package com.carjam.aerotheme;
 
 import android.app.Activity;
+import android.app.UiModeManager;
 import android.os.Bundle;
 import android.graphics.Color;
 import android.view.Gravity;
@@ -42,11 +43,11 @@ public class MainActivity extends Activity {
 
         Button dark = new Button(this);
         dark.setText("Apply Aero Dark Mode");
-        dark.setOnClickListener(v -> runUiMode("yes", status));
+        dark.setOnClickListener(v -> runUiMode(true, status));
 
         Button light = new Button(this);
         light.setText("Apply Aero Light Mode");
-        light.setOnClickListener(v -> runUiMode("no", status));
+        light.setOnClickListener(v -> runUiMode(false, status));
 
         root.addView(title);
         root.addView(status);
@@ -69,7 +70,7 @@ public class MainActivity extends Activity {
         }
     }
 
-    private void runUiMode(String night, TextView status) {
+    private void runUiMode(boolean dark, TextView status) {
         if (!Shizuku.pingBinder()) {
             status.setText("Start Shizuku first.");
             return;
@@ -79,13 +80,25 @@ public class MainActivity extends Activity {
             status.setText("Grant Aero Android Theme Shizuku permission, then retry.");
             return;
         }
+
         try {
-            Process process = Shizuku.newProcess(
-                    new String[]{"cmd", "uimode", "night", night}, null, null);
-            int result = process.waitFor();
-            status.setText(result == 0
-                    ? "Aero mode applied successfully."
-                    : "Android rejected the theme command (exit " + result + ").");
+            UiModeManager uiModeManager = (UiModeManager) getSystemService(UI_MODE_SERVICE);
+            if (uiModeManager == null) {
+                status.setText("Android UI mode service is unavailable.");
+                return;
+            }
+
+            if (android.os.Build.VERSION.SDK_INT >= 31) {
+                uiModeManager.setApplicationNightMode(
+                        dark ? UiModeManager.MODE_NIGHT_YES : UiModeManager.MODE_NIGHT_NO);
+            } else {
+                uiModeManager.setNightMode(
+                        dark ? UiModeManager.MODE_NIGHT_YES : UiModeManager.MODE_NIGHT_NO);
+            }
+
+            status.setText(dark
+                    ? "Aero Dark Mode requested."
+                    : "Aero Light Mode requested.");
         } catch (Exception e) {
             status.setText("Theme command failed: " + e.getClass().getSimpleName());
         }
