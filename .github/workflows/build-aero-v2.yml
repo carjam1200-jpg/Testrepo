@@ -1,0 +1,52 @@
+name: Build Aero Android Theme v2
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - "aero-android-theme-shizuku/**"
+      - ".github/workflows/build-aero-v2.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: aero-android-theme-shizuku
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK packages
+        run: sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
+
+      - name: Make Gradle launcher executable
+        run: chmod +x ./gradlew
+
+      - name: Show Gradle version
+        run: ./gradlew --version --no-daemon
+
+      - name: Build debug APK
+        run: ./gradlew clean assembleDebug --no-daemon --stacktrace
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: aero-android-theme-debug-v2
+          path: aero-android-theme-shizuku/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
