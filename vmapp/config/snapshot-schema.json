@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "snapshot": {
+    "name": "BeforeChange",
+    "vm_id": "example-vm",
+    "memory_state": null,
+    "disk_state": "linked-or-copy-on-write",
+    "created_at": null
+  },
+  "operations": ["create", "restore", "delete"]
+}
