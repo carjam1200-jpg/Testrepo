@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "installation_flow": {
+    "new_vm": {
+      "create_virtual_disk": true,
+      "disk_format": "vhdx",
+      "attach_iso": true,
+      "boot_order": ["cdrom", "disk"]
+    },
+    "after_os_install": {
+      "boot_order": ["disk", "cdrom"],
+      "eject_iso": false
+    }
+  }
+}
