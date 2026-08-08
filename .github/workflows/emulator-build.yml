@@ -1,0 +1,48 @@
+name: Build emulator files
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'src/**'
+      - '.github/workflows/emulator-build.yml'
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout emulator source
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install build tools
+        run: python -m pip install --upgrade pip pyinstaller
+
+      - name: Build vmtest.exe
+        run: python -m PyInstaller --onefile --windowed --name vmtest src/vm_manager.py
+
+      - name: Collect emulator files
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path emulator-package | Out-Null
+          Copy-Item dist/vmtest.exe emulator-package/vmtest.exe
+          Copy-Item src/vm_manager.py emulator-package/vm_manager.py
+          Copy-Item src/vm_config.py emulator-package/vm_config.py
+          Copy-Item src/qemu_backend.py emulator-package/qemu_backend.py
+          Copy-Item src/disk_manager.py emulator-package/disk_manager.py
+
+      - name: Create emulator package
+        shell: pwsh
+        run: Compress-Archive -Path emulator-package/* -DestinationPath vmtest-emulator.zip -Force
+
+      - name: Upload emulator-only artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: vmtest-emulator
+          path: |
+            emulator-package/vmtest.exe
+            vmtest-emulator.zip
