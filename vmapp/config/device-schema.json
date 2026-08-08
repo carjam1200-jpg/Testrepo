@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "devices": {
+    "storage": {
+      "controllers": ["sata", "virtio"]
+    },
+    "network": {
+      "adapter": "virtual-net0",
+      "mac_address": "auto"
+    },
+    "display": {
+      "adapter": "generic-vga",
+      "video_memory_mb": 64,
+      "fullscreen": false,
+      "scaling": true
+    },
+    "audio": {
+      "enabled": true,
+      "device": "virtual-audio0"
+    },
+    "input": {
+      "keyboard": true,
+      "mouse": true
+    }
+  }
+}
