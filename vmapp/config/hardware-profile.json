@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "profiles": {
+    "basic": {
+      "architecture": "x86_64",
+      "cpus": 2,
+      "memory_mb": 2048,
+      "video_memory_mb": 64,
+      "network": "user",
+      "audio": true
+    },
+    "performance": {
+      "architecture": "x86_64",
+      "cpus": 4,
+      "memory_mb": 8192,
+      "video_memory_mb": 128,
+      "network": "user",
+      "audio": true
+    }
+  }
+}
