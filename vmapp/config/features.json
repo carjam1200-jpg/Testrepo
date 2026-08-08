@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "features": {
+    "snapshots": {
+      "enabled": true,
+      "description": "Save and restore VM state checkpoints"
+    },
+    "pause_resume": true,
+    "save_state": true,
+    "reset": true,
+    "power_off": true,
+    "acpi_shutdown": true,
+    "virtual_cdrom": true,
+    "virtual_hard_disk": true,
+    "disk_attach_detach": true,
+    "boot_order": true,
+    "ram_configuration": true,
+    "cpu_configuration": true,
+    "networking": {
+      "enabled": true,
+      "modes": ["user", "bridged", "none"]
+    },
+    "audio": true,
+    "shared_folder": true,
+    "clipboard_sharing": true,
+    "display_scaling": true,
+    "fullscreen": true,
+    "vm_logs": true,
+    "hardware_profiles": true
+  }
+}
