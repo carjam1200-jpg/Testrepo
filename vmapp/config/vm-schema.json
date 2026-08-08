@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "vm": {
+    "name": "ExampleVM",
+    "architecture": "x86_64",
+    "memory_mb": 2048,
+    "cpus": 2,
+    "boot": {
+      "iso": null,
+      "disk": null
+    },
+    "storage": [],
+    "network": {
+      "enabled": true,
+      "mode": "user"
+    }
+  }
+}
